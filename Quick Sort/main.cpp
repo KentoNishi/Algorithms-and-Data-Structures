@@ -3,52 +3,50 @@
 #include <cmath>
 #include <vector>
 using namespace std;
-void insertionSort(int* arr[],int size){
-    for(int i=1;i<size;i++){
-        int prev=*arr[i];
-        int k=i-1;
-        while(*arr[k]>prev&&k>=0){
-            *arr[k+1]=*arr[k];
-            k--;
-        }
-        *arr[k+1]=prev;
-    }
+
+void swap(vector<int>* param,int left,int right){
+    int temp=(*param)[left];
+    (*param)[left]=(*param)[right];
+    (*param)[right]=temp;
 }
 
-vector<int> sequence;
-void shellSort(int arr[],int size){
-    for(int i=sequence.size()-1;i>=0;i--){
-        int gap=sequence[i];
-        for(int k=gap;k<size;k++){
-            int temp=arr[k];
-            int j=k;
-            while(j>=gap&&arr[j-gap]>temp){
-                arr[j]=arr[j-gap];
-                j-=gap;
-            }
-            arr[j]=temp;
+int partition(vector<int>* arr,int left,int right,int pivot){
+    int lower=left-1;
+    int higher=right;
+    while(true){
+        while(lower<right&&(*arr)[++lower]<pivot){
+        }
+        while(higher>0&&(*arr)[--higher]>pivot){
+        }
+        if(lower>=higher){
+            break;
+        }else{
+            swap(arr,lower,higher);
         }
     }
-    for(int i=0;i<size;i++){
-        cout << arr[i] << endl;
-    }
+    swap(arr,lower,right);
+    return lower;
 }
 
-void generateSequence(int size){
-    int prev=1;
-    while(prev<size){
-        sequence.push_back(prev);
-        prev=3*prev+1;
+void quickSort(vector<int>* arr,int left,int right){
+    if(left>=right){
+        return;
     }
+    int pivot=(*arr)[right];
+    int part=partition(arr,left,right,pivot);
+    quickSort(arr,left,part-1);
+    quickSort(arr,part+1,right);
 }
 
 int main(){
-    int param[1000];
-    for(int i=0;i<sizeof(param)/sizeof(param[0]);i++){
-        param[i]=rand()%(sizeof(param)/sizeof(param[0]));
+    vector<int>* param=new vector<int>(100);;
+    for(int i=0;i<100;i++){
+        (*param)[i]=(rand()%100);
     }
-    int size=sizeof(param)/sizeof(param[0]);
-    generateSequence(size);
-    shellSort(param,size);
+    int right=(*param).size()-1;
+    quickSort(param,0,right);
+    for(int i=0;i<(*param).size();i++){
+        cout << (*param)[i] << endl;
+    }
     return 0;
 }
