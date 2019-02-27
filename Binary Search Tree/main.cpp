@@ -137,6 +137,13 @@ class Tree{
                 preorderTraversal((*localRoot).right);
             }
         }
+        void reverseTraversal(Node* localRoot){
+            if(localRoot!=NULL){
+                reverseTraversal((*localRoot).right);
+                (*localRoot).display();
+                reverseTraversal((*localRoot).left);
+            }
+        }
         void inorderTraversal(Node* localRoot){
             if(localRoot!=NULL){
                 inorderTraversal((*localRoot).left);
