@@ -1,8 +1,8 @@
 #include <array>
 #include <iostream>
 #include <cmath>
-#include <vector>
 #include <algorithm>
+#include <vector>
 using namespace std;
 
 bool notAll(vector<int> arr,int num){
