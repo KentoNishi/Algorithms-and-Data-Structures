@@ -28,6 +28,8 @@ vector<string> split(string str, string character){
     return result;
 }
 
+int inf=1000000;
+
 class DistPar{
     public:
         int distance;
@@ -35,6 +37,9 @@ class DistPar{
         DistPar(int pv, int d){
             distance=d;
             parentVert=pv;
+        }
+        DistPar(){
+            
         }
 };
 
@@ -46,11 +51,14 @@ class Vertex{
             label=lab;
             isInTree=false;
         }
+        Vertex(){
+
+        }
 };
 
 class Graph{
     private:
-        const int maxVerts=20;
+        const int MAX_VERTS=20;
         vector<Vertex> vertexList;
         vector<vector<int>> adjMat;
         int nVerts;
@@ -60,16 +68,16 @@ class Graph{
         int startToCurrent;
     public:
         Graph(){
-            vertexList=vector<Vertex>(maxVerts);
-            nVerts=0;
-            nTree=0;
-            for(int x=0;x<maxVerts;x++){
+            vertexList=vector<Vertex>(MAX_VERTS);
+            for(int x=0;x<MAX_VERTS;x++){
                 adjMat.push_back({});
-                for(int y=0;y<maxVerts;y++){
-                    adjMat[x].push_back(INFINITY);
+                for(int y=0;y<MAX_VERTS;y++){
+                    adjMat[x].push_back(inf);
                 }
             }
-            sPath=vector<DistPar>(maxVerts);
+            sPath=vector<DistPar>(MAX_VERTS);
+            nVerts=0;
+            nTree=0;
         }
         void addVertex(string lab){
             vertexList[nVerts++]=Vertex(lab);
@@ -88,7 +96,7 @@ class Graph{
             while(nTree<nVerts){
                 int indexMin=getMin();
                 int minDist=sPath[indexMin].distance;
-                if(minDist==INFINITY){
+                if(isinf(minDist)){
                     cout << "Unreachable vertices" << endl;
                     break;
                 }else{
@@ -97,7 +105,7 @@ class Graph{
                 }
                 vertexList[currentVert].isInTree=true;
                 nTree++;
-                adjustSPath();
+                adjust_sPath();
             }
             displayPaths();
             nTree=0;
@@ -106,18 +114,18 @@ class Graph{
             }
         }
         int getMin(){
-            int minDist=INFINITY;
+            int minDist=inf;
             int indexMin=0;
             for(int j=1;j<nVerts;j++){
-                if(!vertexList[j].isInTree && sPath[j].distance < minDist){
+                if(!vertexList[j].isInTree && sPath[j].distance<minDist){
                     minDist=sPath[j].distance;
                     indexMin=j;
                 }
             }
             return indexMin;
         }
-        void adjustSPath(){
-            int column=-1;
+        void adjust_sPath(){
+            int column=1;
             while(column<nVerts){
                 if(vertexList[column].isInTree){
                     column++;
@@ -136,13 +144,37 @@ class Graph{
         void displayPaths(){
             for(int j=0;j<nVerts;j++){
                 cout << vertexList[j].label << "=";
-                //continue from here
+                if(isinf(sPath[j].distance)){
+                    cout << "inf";
+                }else{
+                    cout << sPath[j].distance;
+                }
+                string parent=vertexList[sPath[j].parentVert].label;
+                cout << "(" << parent << ")" << endl;
             }
+            cout << endl;
         }
 };
 
-
-//pg 730
 int main(){
+    Graph graph=Graph();
+    graph.addVertex("A");
+    graph.addVertex("C");
+    graph.addVertex("B");
+    graph.addVertex("D");
+    graph.addVertex("E");
+    graph.addEdge(0,1,50);
+    graph.addEdge(0,3,80);
+    graph.addEdge(1,2,60);
+    graph.addEdge(1,3,90);
+    graph.addEdge(2,4,40);
+    graph.addEdge(3,2,20);
+    graph.addEdge(3,4,70);
+    graph.addEdge(4,1,50);
+    cout << "Shortest paths: " << endl;
+    graph.path();
+    cout << endl;
     return 0;
 }
+
+
