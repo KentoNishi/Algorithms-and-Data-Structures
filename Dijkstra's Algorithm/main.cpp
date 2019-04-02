@@ -28,7 +28,7 @@ vector<string> split(string str, string character){
     return result;
 }
 
-int inf=1000000;
+int inf=100000000;
 
 class DistPar{
     public:
@@ -96,7 +96,7 @@ class Graph{
             while(nTree<nVerts){
                 int indexMin=getMin();
                 int minDist=sPath[indexMin].distance;
-                if(isinf(minDist)){
+                if(inf==(minDist)){
                     cout << "Unreachable vertices" << endl;
                     break;
                 }else{
@@ -144,7 +144,7 @@ class Graph{
         void displayPaths(){
             for(int j=0;j<nVerts;j++){
                 cout << vertexList[j].label << "=";
-                if(isinf(sPath[j].distance)){
+                if(inf==(sPath[j].distance)){
                     cout << "inf";
                 }else{
                     cout << sPath[j].distance;
